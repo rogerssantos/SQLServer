@@ -18,5 +18,3 @@ GO
 
 --TESTE
 EXECUTE xp_cmdshell 'C:\Workspace\delete.bat';
-
-ok google
