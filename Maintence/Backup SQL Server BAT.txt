@@ -1,0 +1,1 @@
+sqlcmd -E -Q "backup database DATABASENAME to disk='C:\Backup\DATABASENAME.bak' WITH INIT"
