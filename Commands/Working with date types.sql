@@ -1,1 +1,3 @@
-Roger teste
+select getdate();
+
+select datepart(day ,getdate());
