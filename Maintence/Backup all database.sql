@@ -1,6 +1,5 @@
 /*Backup all dataBases*/
 
-
 DECLARE @dataBase VARCHAR(40);
 DECLARE @caminho VARCHAR(1000);
 DECLARE @sqlCommand VARCHAR(1000);
