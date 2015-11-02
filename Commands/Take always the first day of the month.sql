@@ -1,1 +1,3 @@
-SELECT DATEADD(MM, DATEDIFF(MM,0,GETDATE()) + 0, 0);
+-- First day of the current month
+
+SELECT DATEADD(MM, DATEDIFF(MM,0,GETDATE()), 0);
