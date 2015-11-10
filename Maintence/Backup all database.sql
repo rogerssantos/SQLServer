@@ -17,7 +17,6 @@ BEGIN
 
 	SET @dtBackup = REPLACE(CONVERT(VARCHAR(10), GETDATE(), 103),'/', '_')
 	SET @path =	LTRIM('C:\Backup\'+@dataBase+'_'+@dtBackup+'.bak');
-
 	SET @sqlCommand = 'BACKUP DATABASE ' + @dataBase +' TO DISK = ''' + @path + ''' WITH INIT;'
 
 	EXEC (@sqlCommand);
