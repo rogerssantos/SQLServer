@@ -1,22 +1,24 @@
 /*Backup all dataBases*/
 
 DECLARE @dataBase VARCHAR(40);
-DECLARE @caminho VARCHAR(1000);
+DECLARE @path VARCHAR(1000);
 DECLARE @sqlCommand VARCHAR(1000);
 DECLARE @dtBackup VARCHAR(10)
 
 DECLARE DBBACKUP CURSOR FOR
-	SELECT NAME FROM SYS.DATABASES
-	WHERE NAME LIKE 'Name'
+	SELECT name FROM sys.databases
+	WHERE name NOT IN (
+		'master', 'tempdb', 'model', 'msdb', 'ReportServer', 'ReportServerTempDB'
+	)
 OPEN DBBACKUP FETCH NEXT
 FROM DBBACKUP INTO @dataBase
 WHILE @@FETCH_STATUS = 0
 BEGIN
 
 	SET @dtBackup = REPLACE(CONVERT(VARCHAR(10), GETDATE(), 103),'/', '_')
-	SET @caminho =	LTRIM('C:\Backup\'+@dataBase+'_'+@dtBackup+'.bak');
+	SET @path =	LTRIM('C:\Backup\'+@dataBase+'_'+@dtBackup+'.bak');
 
-	SET @sqlCommand = 'BACKUP database ' + @dataBase +' to disk = ''' + @caminho + ''' WITH INIT;'
+	SET @sqlCommand = 'BACKUP DATABASE ' + @dataBase +' TO DISK = ''' + @path + ''' WITH INIT;'
 
 	EXEC (@sqlCommand);
 
