@@ -1,8 +1,8 @@
 SELECT 'select ' + 
-stuff((SELECT ', ' + c.column_name FROM INFORMATION_SCHEMA.COLUMNS C 
+STUFF((SELECT ', ' + c.column_name FROM INFORMATION_SCHEMA.COLUMNS C 
 		WHERE C.TABLE_NAME = T.TABLE_NAME
 		FOR XML PATH('')), 1, 1, '') [INFORMATION_SCHEMA.TABLES/INFORMATION_SCHEMA.COLUMNS],
-		' from ' + LOWER(T.TABLE_NAME)  + ';' AS 'table_name'
+		' FROM ' + LOWER(T.TABLE_NAME)  + ';' AS 'table_name'
 FROM INFORMATION_SCHEMA.TABLES T 
 WHERE t.table_name like '%'
 ORDER BY table_name ASC;
