@@ -1,5 +1,11 @@
 /*Backup all dataBases*/
 
+/******** NOTE ********/
+
+/*For this procediment work and the SQL Server save a log file in your
+computer you need to create the prWriteToFile procedure that you can find in that link:
+ https://github.com/rogerssantos/SQLServer/blob/master/Procedures/prWriteToFile.sql */
+
 DECLARE @dataBase VARCHAR(40);
 DECLARE @path VARCHAR(1000);
 DECLARE @sqlCommand VARCHAR(1000);
