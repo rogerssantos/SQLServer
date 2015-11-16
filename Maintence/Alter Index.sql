@@ -1,5 +1,5 @@
 
-/*-----------------------------------------------------VERIFICACAO DE REGISTROS FRAGMENTADOS---------------------------------------------------------------*/
+/*---------------------VERIFICACAO DE REGISTROS FRAGMENTADOS---------------------*/
 
 USE @DATABASE
 GO
@@ -16,7 +16,7 @@ WHERE   AVG_FRAGMENTATION_IN_PERCENT >= 50.0
         AND INDEX_ID > 0
 ORDER BY FRAG DESC;
 
-/*--------------------------------------COMANDO PARA PEGAR TODAS AS TABELAS DO BANCO-----------------------------------------------*/
+/*-----------------COMANDO PARA PEGAR TODAS AS TABELAS DO BANCO-----------------*/
 
 SELECT  'ALTER INDEX ALL ON DBO.' + TAB.NAME + ' REBUILD;'
 FROM    SYS.TABLES TAB
