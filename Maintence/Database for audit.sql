@@ -29,12 +29,12 @@ CREATE TABLE [dbo].[DDLEvents](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-IF OBJECT_ID('TR_DDLEvents') IS NOT NULL
-	DROP TRIGGER TR_DDLEvents;
+IF (SELECT NAME FROM SYS.server_triggers WHERE NAME = 'TR_DDLEvents') IS NOT NULL
+	DROP TRIGGER [TR_DDLEvents] ON ALL SERVER;
 GO
 
-CREATE TRIGGER TR_DDLEvents
-    ON DATABASE
+CREATE TRIGGER [TR_DDLEvents]
+    ON ALL SERVER
     FOR
 	CREATE_PROCEDURE, ALTER_PROCEDURE, DROP_PROCEDURE,
 	CREATE_TABLE, ALTER_TABLE, DROP_TABLE,
@@ -45,15 +45,15 @@ BEGIN
     SET NOCOUNT ON;
     DECLARE
         @EventData XML = EVENTDATA();
- 
-    DECLARE 
+
+    DECLARE
         @ip VARCHAR(32) =
         (
             SELECT client_net_address
                 FROM sys.dm_exec_connections
                 WHERE session_id = @@SPID
         );
- 
+
     INSERT AuditDB.dbo.DDLEvents
     (
 		EventDate,
@@ -70,11 +70,11 @@ BEGIN
     )
     SELECT
 		CURRENT_TIMESTAMP,
-        @EventData.value('(/EVENT_INSTANCE/EventType)[1]',   'NVARCHAR(100)'), 
+        @EventData.value('(/EVENT_INSTANCE/EventType)[1]',   'NVARCHAR(100)'),
         @EventData.value('(/EVENT_INSTANCE/TSQLCommand)[1]', 'NVARCHAR(MAX)'),
         @EventData,
         DB_NAME(),
-        @EventData.value('(/EVENT_INSTANCE/SchemaName)[1]',  'NVARCHAR(255)'), 
+        @EventData.value('(/EVENT_INSTANCE/SchemaName)[1]',  'NVARCHAR(255)'),
         @EventData.value('(/EVENT_INSTANCE/ObjectName)[1]',  'NVARCHAR(255)'),
         HOST_NAME(),
         @ip,
