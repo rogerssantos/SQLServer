@@ -17,6 +17,7 @@ BEGIN
 
 		IF @ROWCOUNT = 0
 		BEGIN
-	        SET @CONTINUE = 0
-	    END
+	  	SET @CONTINUE = 0
+	  END
+
 END
