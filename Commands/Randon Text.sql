@@ -2,7 +2,7 @@
 -- Generate a randon text
 
 DECLARE @OUT VARCHAR(160) = '',
-		@LENGTH INT = CAST(RAND() * 160 as INT);
+	@LENGTH INT = CAST(RAND() * 160 as INT);
 WHILE @LENGTH <> 0
 BEGIN
 	SELECT @OUT = @OUT + CHAR(CAST(RAND() * 96 + 32 as INT));

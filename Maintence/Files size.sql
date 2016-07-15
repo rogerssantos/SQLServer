@@ -1,0 +1,9 @@
+SELECT
+	f.fileid,
+	[FILE_SIZE_MB] = CONVERT(DECIMAL(12, 2), ROUND(f.size / 128.00, 2)),
+	[SPACE_USED_MB] = CONVERT(DECIMAL(12, 2), ROUND(FILEPROPERTY(f.NAME, 'SpaceUsed') / 128.00, 2)),
+	[FREE_SPACE_MB] = CONVERT(DECIMAL(12, 2), ROUND((f.size - FILEPROPERTY(f.NAME, 'SpaceUsed')) / 128.00, 2)),
+	name = LEFT(f.name, 30),
+	FILENAME = LEFT(f.FILENAME, 150)
+FROM
+	dbo.sysfiles f;
