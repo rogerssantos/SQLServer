@@ -99,5 +99,3 @@ LEFT JOIN (
 	AND tmp2.index_id = I.index_id
 WHERE I.is_primary_key = 0
 	AND I.is_unique_constraint = 0
-	--AND I.Object_id = object_id('Person.Address') --Comment for all tables 
-	--AND I.name = 'IX_Address_PostalCode' --comment for all indexes 
