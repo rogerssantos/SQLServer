@@ -7,9 +7,9 @@ INSERT INTO @TEST
 	(ID, DS)
 VALUES
 	(1, 'TEST1'),
-	(2, 'TEST1'),
-	(3, 'TEST1'),
-	(4, 'TEST1');
+	(2, 'TEST2'),
+	(3, 'TEST3'),
+	(4, 'TEST4');
 
 DECLARE @VAR XML = (SELECT * FROM @TEST FOR XML AUTO);
 
