@@ -17,6 +17,6 @@ SELECT @VAR;
 
 -- Result:
 <_x0040_TEST ID="1" DS="TEST1" />
-<_x0040_TEST ID="2" DS="TEST1" />
-<_x0040_TEST ID="3" DS="TEST1" />
-<_x0040_TEST ID="4" DS="TEST1" />
+<_x0040_TEST ID="2" DS="TEST2" />
+<_x0040_TEST ID="3" DS="TEST3" />
+<_x0040_TEST ID="4" DS="TEST4" />
