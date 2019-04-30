@@ -1,0 +1,97 @@
+SELECT
+  *
+FROM (
+	SELECT
+		[UserName] =
+		CASE princ.[type]
+			WHEN 'S' THEN princ.[name]
+			WHEN 'U' THEN ulogin.[name] COLLATE Latin1_General_CI_AI
+		END,
+		[UserType] =
+		CASE princ.[type]
+			WHEN 'S' THEN 'SQL User'
+			WHEN 'U' THEN 'Windows User'
+		END,
+		[DatabaseUserName] = princ.[name],
+		[Role] = NULL,
+		[PermissionType] = perm.[permission_name],
+		[PermissionState] = perm.[state_desc],
+		[ObjectType] = obj.type_desc,--perm.[class_desc],       
+		[ObjectName] = OBJECT_NAME(perm.major_id),
+		[ColumnName] = col.[name]
+	FROM sys.database_principals princ
+	LEFT JOIN sys.login_token ulogin
+		ON princ.[sid] = ulogin.[sid]
+	LEFT JOIN sys.database_permissions perm
+		ON perm.[grantee_principal_id] = princ.[principal_id]
+	LEFT JOIN sys.columns col
+		ON col.[object_id] = perm.major_id
+		AND col.[column_id] = perm.[minor_id]
+	LEFT JOIN sys.objects obj 
+	ON perm.[major_id] = obj.[object_id]
+	WHERE
+		princ.[type] IN ('S', 'U')
+
+	UNION
+
+	SELECT
+		[UserName] =
+			CASE memberprinc.[type]
+				WHEN 'S' THEN memberprinc.[name]
+				WHEN 'U' THEN ulogin.[name] COLLATE Latin1_General_CI_AI
+			END,
+		[UserType] =
+			CASE memberprinc.[type]
+				WHEN 'S' THEN 'SQL User'
+				WHEN 'U' THEN 'Windows User'
+			END,
+		[DatabaseUserName] = memberprinc.[name],
+		[Role] = roleprinc.[name],
+		[PermissionType] = perm.[permission_name],
+		[PermissionState] = perm.[state_desc],
+		[ObjectType] = obj.type_desc,--perm.[class_desc],   
+		[ObjectName] = OBJECT_NAME(perm.major_id),
+		[ColumnName] = col.[name]
+	FROM sys.database_role_members members
+	JOIN sys.database_principals roleprinc
+		ON roleprinc.[principal_id] = members.[role_principal_id]
+	JOIN sys.database_principals memberprinc
+		ON memberprinc.[principal_id] = members.[member_principal_id]
+	LEFT JOIN sys.login_token ulogin
+		ON memberprinc.[sid] = ulogin.[sid]
+	LEFT JOIN sys.database_permissions perm
+		ON perm.[grantee_principal_id] = roleprinc.[principal_id]
+	LEFT JOIN sys.columns col
+		ON col.[object_id] = perm.major_id
+		AND col.[column_id] = perm.[minor_id]
+	LEFT JOIN sys.objects obj ON perm.[major_id] = obj.[object_id]
+
+	UNION
+
+	SELECT
+		[UserName] = '{All Users}',
+		[UserType] = '{All Users}',
+		[DatabaseUserName] = '{All Users}',
+		[Role] = roleprinc.[name],
+		[PermissionType] = perm.[permission_name],
+		[PermissionState] = perm.[state_desc],
+		[ObjectType] = obj.type_desc,--perm.[class_desc],  
+		[ObjectName] = OBJECT_NAME(perm.major_id),
+		[ColumnName] = col.[name]
+	FROM sys.database_principals roleprinc
+	LEFT JOIN sys.database_permissions perm
+		ON perm.[grantee_principal_id] = roleprinc.[principal_id]
+	LEFT JOIN sys.columns col
+		ON col.[object_id] = perm.major_id
+		AND col.[column_id] = perm.[minor_id]
+	JOIN sys.objects obj
+		ON obj.[object_id] = perm.[major_id]
+	WHERE
+		roleprinc.[type] = 'R'
+	AND roleprinc.[name] = 'public'
+	AND obj.is_ms_shipped = 0
+) a
+WHERE
+	a.databaseusername IN (
+	'middleware'
+);
