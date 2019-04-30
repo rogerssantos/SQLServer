@@ -89,7 +89,7 @@ SET NOCOUNT ON;
 		@EventData.value('(/EVENT_INSTANCE/EventType)[1]',   'NVARCHAR(100)'), 
 		@EventData.value('(/EVENT_INSTANCE/TSQLCommand)[1]', 'NVARCHAR(MAX)'),
 		@EventData,
-		DB_NAME(),
+		@EventData.value('(/EVENT_INSTANCE/DatabaseName)[1]',  'NVARCHAR(255)'),
 		@EventData.value('(/EVENT_INSTANCE/SchemaName)[1]',  'NVARCHAR(255)'), 
 		@ObjectName,
 		HOST_NAME(),
